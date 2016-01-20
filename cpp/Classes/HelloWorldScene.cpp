@@ -56,21 +56,77 @@ bool HelloWorld::init()
 
 void HelloWorld::createTestMenu()
 {
-    auto menu = Menu::create();
+    sdkbox::PluginChartboost::setListener(this);
 
-    menu->addChild(MenuItemLabel::create(Label::createWithSystemFont("Test Item 1", "sans", 24), [](Ref*){
-        CCLOG("Test Item 1");
-    }));
-
-    menu->addChild(MenuItemLabel::create(Label::createWithSystemFont("Test Item 2", "sans", 24), [](Ref*){
-        CCLOG("Test Item 2");
-    }));
-
-    menu->addChild(MenuItemLabel::create(Label::createWithSystemFont("Test Item 3", "sans", 24), [](Ref*){
-        CCLOG("Test Item 3");
-    }));
-
-    menu->alignItemsVerticallyWithPadding(10);
+    MenuItemFont::setFontName("sans");
+    Size size = Director::getInstance()->getWinSize();
+    
+    auto menu = Menu::create(MenuItemFont::create("show ads", CC_CALLBACK_1(HelloWorld::onShowAds, this)),
+                             NULL);
+    
+    menu->alignItemsVerticallyWithPadding(5);
+    menu->setPosition(Vec2(size.width/2, size.height/2));
     addChild(menu);
 }
 
+void HelloWorld::onShowAds(cocos2d::Ref* sender)
+{
+    sdkbox::PluginChartboost::show(sdkbox::CB_Location_Default);
+    CCLOG("sdkbox::PluginChartboost::show(sdkbox::CB_Location_Default);");
+}
+
+void HelloWorld::onChartboostCached(const std::string& name)
+{
+    CCLOG("onChartboostCached: %s", name.c_str());
+}
+
+bool HelloWorld::onChartboostShouldDisplay(const std::string& name)
+{
+    CCLOG("onChartboostShouldDisplay: %s", name.c_str());
+    return true;
+}
+
+void HelloWorld::onChartboostDisplay(const std::string& name)
+{
+    CCLOG("onChartboostDisplay: %s", name.c_str());
+}
+
+void HelloWorld::onChartboostDismiss(const std::string& name)
+{
+    CCLOG("onChartboostDismiss: %s", name.c_str());
+}
+
+void HelloWorld::onChartboostClose(const std::string& name)
+{
+    CCLOG("onChartboostClose: %s", name.c_str());
+}
+
+void HelloWorld::onChartboostClick(const std::string& name)
+{
+    CCLOG("onChartboostClick: %s", name.c_str());
+}
+
+void HelloWorld::onChartboostReward(const std::string& name, int reward)
+{
+    CCLOG("onChartboostReward: %s", name.c_str());
+}
+
+void HelloWorld::onChartboostFailedToLoad(const std::string& name, sdkbox::CB_LoadError e)
+{
+    CCLOG("onChartboostFailedToLoad: %s", name.c_str());
+}
+
+void HelloWorld::onChartboostFailToRecordClick(const std::string& name, sdkbox::CB_ClickError e)
+{
+    CCLOG("onChartboostFailToRecordClick: %s", name.c_str());
+}
+
+void HelloWorld::onChartboostConfirmation()
+{
+    CCLOG("onChartboostConfirmation");
+}
+
+void HelloWorld::onChartboostCompleteStore()
+{
+    CCLOG("onChartboostCompleteStore");
+}
