@@ -31,23 +31,58 @@ var HelloWorldLayer = cc.Layer.extend({
     },
 
     createTestMenu:function() {
-        var item1 = new cc.MenuItemLabel(new cc.LabelTTF("Test Item 1", "sans", 28), function() {
-            cc.log("Test Item 1");
+        cc.MenuItemFont.setFontName("sans");
+        var size = cc.Director.getInstance().getWinSize();
+
+        // init plugin
+        sdkbox.PluginChartboost.init();
+
+        var menu = new cc.Menu(
+            new cc.MenuItemFont("show ads", function() {
+                sdkbox.PluginChartboost.show("Default");
+                cc.log("sdkbox.PluginChartboost.show(\"Default\")");
+            })
+        );
+
+        sdkbox.PluginChartboost.setListener({
+            onChartboostCached : function (name) {
+                cc.log("onChartboostCached " + name);
+            },
+            onChartboostShouldDisplay : function (name) {
+                cc.log("onChartboostShouldDisplay " + name);
+            },
+            onChartboostDisplay : function (name) {
+                cc.log("onChartboostDisplay " + name);
+            },
+            onChartboostDismiss : function (name) {
+                cc.log("onChartboostDismiss " + name);
+            },
+            onChartboostClose : function (name) {
+                cc.log("onChartboostClose " + name);
+            },
+            onChartboostClick : function (name) {
+                cc.log("onChartboostClick " + name);
+            },
+            onChartboostReward : function (name, reward) {
+                cc.log("onChartboostReward " + name + " reward " + reward.toString());
+            },
+            onChartboostFailedToLoad : function (name, e) {
+                cc.log("onChartboostFailedToLoad " + name + " load error " + e.toString());
+            },
+            onChartboostFailToRecordClick : function (name, e) {
+                cc.log("onChartboostFailToRecordClick " + name + " click error " + e.toString());
+            },
+            onChartboostConfirmation : function () {
+                cc.log("onChartboostConfirmation");
+            },
+            onChartboostCompleteStore : function () {
+                cc.log("onChartboostCompleteStore");
+            }
         });
 
-        var item2 = new cc.MenuItemLabel(new cc.LabelTTF("Test Item 2", "sans", 28), function() {
-            cc.log("Test Item 2");
-        });
-
-        var item3 = new cc.MenuItemLabel(new cc.LabelTTF("Test Item 3", "sans", 28), function() {
-            cc.log("Test Item 3");
-        });
-
-        var winsize = cc.winSize;
-        var menu = new cc.Menu(item1, item2, item3);
-        menu.x = winsize.width / 2;
-        menu.y = winsize.height / 2;
-        menu.alignItemsVerticallyWithPadding(20);
+        menu.alignItemsVerticallyWithPadding(5);
+        menu.x = size.width/2;
+        menu.y = size.height/2;
         this.addChild(menu);
     }
 });
