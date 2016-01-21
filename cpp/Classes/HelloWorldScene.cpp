@@ -108,17 +108,17 @@ void HelloWorld::onChartboostClick(const std::string& name)
 
 void HelloWorld::onChartboostReward(const std::string& name, int reward)
 {
-    CCLOG("onChartboostReward: %s", name.c_str());
+    CCLOG("onChartboostReward: %s, %d", name.c_str(), reward);
 }
 
 void HelloWorld::onChartboostFailedToLoad(const std::string& name, sdkbox::CB_LoadError e)
 {
-    CCLOG("onChartboostFailedToLoad: %s", name.c_str());
+    CCLOG("onChartboostFailedToLoad: %s, %d", name.c_str(), static_cast<int>(e));
 }
 
 void HelloWorld::onChartboostFailToRecordClick(const std::string& name, sdkbox::CB_ClickError e)
 {
-    CCLOG("onChartboostFailToRecordClick: %s", name.c_str());
+    CCLOG("onChartboostFailToRecordClick: %s, %d", name.c_str(), static_cast<int>(e));
 }
 
 void HelloWorld::onChartboostConfirmation()

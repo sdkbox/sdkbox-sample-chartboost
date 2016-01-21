@@ -18,26 +18,45 @@ function MainScene:onCreate()
 end
 
 function MainScene:setupTestMenu()
-    local label1 = cc.Label:createWithSystemFont("Test Item 1", "sans", 28)
-    local item1 = cc.MenuItemLabel:create(label1)
-    item1:onClicked(function()
-        print("Test Item 1")
+    cc.MenuItemFont:setFontName("sans")
+    local size = cc.Director:getInstance():getWinSize()
+
+    sdkbox.PluginChartboost:init()
+    sdkbox.PluginChartboost:setListener(function(args)
+        if "onChartboostCached" == args.func then
+            printf("onChartboostCached: %s", args.name)
+        elseif "onChartboostShouldDisplay" == args.func then
+            printf("onChartboostShouldDisplay: %s", args.name)
+        elseif "onChartboostDisplay" == args.func then
+            printf("onChartboostDisplay: %s", args.name)
+        elseif "onChartboostDismiss" == args.func then
+            printf("onChartboostDismiss: %s", args.name)
+        elseif "onChartboostClose" == args.func then
+            printf("onChartboostClose: %s", args.name)
+        elseif "onChartboostClick" == args.func then
+            printf("onChartboostClick: %s", args.name)
+        elseif "onChartboostReward" == args.func then
+            printf("onChartboostReward: %s, %s", args.name, tostring(args.reward))
+        elseif "onChartboostFailedToLoad" == args.func then
+            printf("onChartboostFailedToLoad: %s, %s", args.name, tostring(args.e))
+        elseif "onChartboostFailToRecordClick" == args.func then
+            printf("onChartboostFailToRecordClick: %s, %s", args.name, tostring(args.e))
+        elseif "onChartboostConfirmation" == args.func then
+            print("onChartboostConfirmation")
+        elseif "onChartboostCompleteStore" == args.func then
+            print("onChartboostCompleteStore")
+        end
     end)
 
-    local label2 = cc.Label:createWithSystemFont("Test Item 2", "sans", 28)
-    local item2 = cc.MenuItemLabel:create(label2)
-    item2:onClicked(function()
-        print("Test Item 2")
-    end)
+    local menu = cc.Menu:create(
+        cc.MenuItemFont:create("show ads"):onClicked(function()
+            sdkbox.PluginChartboost:show("Default")
+            print("sdkbox.PluginChartboost:show(\"Default\")");
+        end)
+    )
 
-    local label3 = cc.Label:createWithSystemFont("Test Item 3", "sans", 28)
-    local item3 = cc.MenuItemLabel:create(label3)
-    item3:onClicked(function()
-        print("Test Item 3")
-    end)
-
-    local menu = cc.Menu:create(item1, item2, item3)
-    menu:alignItemsVerticallyWithPadding(24)
+    menu:alignItemsVerticallyWithPadding(5)
+    menu:setPosition(size.width/2, size.height/2)
     self:addChild(menu)
 end
 
