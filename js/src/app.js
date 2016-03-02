@@ -34,13 +34,25 @@ var HelloWorldLayer = cc.Layer.extend({
         cc.MenuItemFont.setFontName("sans");
         var size = cc.Director.getInstance().getWinSize();
 
+        var coin = 0;
+        var coinLabel = new cc.LabelTTF("0", "sans", 32);
+        coinLabel.x = size.width / 2;
+        coinLabel.y = size.height - 80;
+        this.addChild(coinLabel);
+
         // init plugin
         sdkbox.PluginChartboost.init();
+        sdkbox.PluginChartboost.cache("Default");
+        sdkbox.PluginChartboost.cache("Level Complete");
 
         var menu = new cc.Menu(
-            new cc.MenuItemFont("show ads", function() {
+            new cc.MenuItemFont("video", function() {
                 sdkbox.PluginChartboost.show("Default");
                 cc.log("sdkbox.PluginChartboost.show(\"Default\")");
+            }),
+            new cc.MenuItemFont("reward", function() {
+                sdkbox.PluginChartboost.show("Level Complete");
+                cc.log("sdkbox.PluginChartboost.show(\"Level Complete\")");
             })
         );
 
@@ -65,6 +77,8 @@ var HelloWorldLayer = cc.Layer.extend({
             },
             onChartboostReward : function (name, reward) {
                 cc.log("onChartboostReward " + name + " reward " + reward.toString());
+                coin += reward;
+                coinLabel.setString(coin.toString());
             },
             onChartboostFailedToLoad : function (name, e) {
                 cc.log("onChartboostFailedToLoad " + name + " load error " + e.toString());

@@ -19,7 +19,8 @@ public:
 private:
     void createTestMenu();
     
-    void onShowAds(cocos2d::Ref* sender);
+    int _coin;
+    cocos2d::Label *_coinLabel;
 
     void onChartboostCached(const std::string& name);
     bool onChartboostShouldDisplay(const std::string& name);

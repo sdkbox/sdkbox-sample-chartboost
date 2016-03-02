@@ -21,7 +21,14 @@ function MainScene:setupTestMenu()
     cc.MenuItemFont:setFontName("sans")
     local size = cc.Director:getInstance():getWinSize()
 
+    local coin = 0
+    local coinLabel = cc.Label:createWithSystemFont("0", "sans", 32)
+    coinLabel:setPosition(size.width / 2, size.height - 80)
+    self:addChild(coinLabel)
+
     sdkbox.PluginChartboost:init()
+    sdkbox.PluginChartboost:cache("Default")
+    sdkbox.PluginChartboost:cache("Level Complete")
     sdkbox.PluginChartboost:setListener(function(args)
         if "onChartboostCached" == args.func then
             printf("onChartboostCached: %s", args.name)
@@ -37,6 +44,8 @@ function MainScene:setupTestMenu()
             printf("onChartboostClick: %s", args.name)
         elseif "onChartboostReward" == args.func then
             printf("onChartboostReward: %s, %s", args.name, tostring(args.reward))
+            coin = coin + args.reward
+            coinLabel:setString(tostring(coin))
         elseif "onChartboostFailedToLoad" == args.func then
             printf("onChartboostFailedToLoad: %s, %s", args.name, tostring(args.e))
         elseif "onChartboostFailToRecordClick" == args.func then
@@ -49,9 +58,14 @@ function MainScene:setupTestMenu()
     end)
 
     local menu = cc.Menu:create(
-        cc.MenuItemFont:create("show ads"):onClicked(function()
+        cc.MenuItemFont:create("video"):onClicked(function()
             sdkbox.PluginChartboost:show("Default")
             print("sdkbox.PluginChartboost:show(\"Default\")");
+        end),
+
+        cc.MenuItemFont:create("reward"):onClicked(function()
+            sdkbox.PluginChartboost:show("Level Complete")
+            print("sdkbox.PluginChartboost:show(\"Level Complete\")");
         end)
     )
 
